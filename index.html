@@ -52,14 +52,26 @@
             margin-top: 20px;
             font-size: 18px;
             color: #333;
-            min-height: 25px; /* กันหน้ากระตุกเวลาข้อความโผล่ */
+            min-height: 80px; /* เพิ่มความสูงเผื่อแสดงชื่อและห้อง */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+            display: none; /* ซ่อนไว้ก่อนจนกว่าจะค้นหา */
+        }
+        .student-name {
+            color: #0056b3;
+            font-size: 20px;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
         }
         .room-number {
             color: #d9534f;
             font-size: 24px;
             font-weight: bold;
             display: block;
-            margin-top: 10px;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -67,7 +79,7 @@
 
 <div class="container">
     <h2>ตรวจสอบห้องพักนักเรียน</h2>
-    <input type="text" id="studentId" placeholder="กรอกเลขประจำตัวนักเรียนที่นี่..." onkeypress="handleKeyPress(event)">
+    <input type="text" id="studentId" placeholder="กรอกเลขประจำตัวนักเรียน..." onkeypress="handleKeyPress(event)">
     <br>
     <button onclick="checkRoom()">ค้นหา</button>
     
@@ -76,38 +88,45 @@
 </div>
 
 <script>
-    // ฐานข้อมูลจำลอง: จับคู่เลขประจำตัวกับหมายเลขห้อง
-    // คุณสามารถเพิ่มหรือแก้ไขข้อมูลตรงนี้ได้เลย
+    // ฐานข้อมูลจำลองแบบใหม่ (เก็บทั้งชื่อและห้อง)
     const studentData = {
-        "1001": "ห้อง 101 (ตึก A)",
-        "1002": "ห้อง 102 (ตึก A)",
-        "1003": "ห้อง 201 (ตึก B)",
-        "1004": "ห้อง 205 (ตึก B)",
-        "5555": "ห้อง VIP (ตึก C)"
+        "1001": { name: "ด.ช. สมชาย รักเรียน", room: "ห้อง 101 (ตึก A)" },
+        "1002": { name: "ด.ญ. สมหญิง จริงใจ", room: "ห้อง 102 (ตึก A)" },
+        "1003": { name: "นาย มานะ พากเพียร", room: "ห้อง 201 (ตึก B)" },
+        "1004": { name: "นางสาว มาลี สีสวย", room: "ห้อง 205 (ตึก B)" },
+        "5555": { name: "ผอ. ยอดเยี่ยม เสมอมา", room: "ห้อง VIP (ตึก C)" }
     };
 
     function checkRoom() {
-        // ดึงค่าจากช่อง input และตัดช่องว่างซ้ายขวาออก
         const id = document.getElementById("studentId").value.trim();
         const resultDiv = document.getElementById("result");
+        
+        // แสดงกรอบผลลัพธ์
+        resultDiv.style.display = "block";
 
-        // ตรวจสอบว่ากรอกข้อมูลหรือยัง
         if (id === "") {
             resultDiv.innerHTML = "<span style='color: red;'>กรุณากรอกเลขประจำตัวนักเรียนครับ</span>";
             return;
         }
 
-        // ค้นหาข้อมูลใน object studentData
-        if (studentData[id]) {
-            // ถ้าเจอข้อมูล ให้แสดงผล
-            resultDiv.innerHTML = `เลขประจำตัว <b>${id}</b><br> <span class="room-number">${studentData[id]}</span>`;
+        // ค้นหาข้อมูลใน object studentData (ดึงมาทั้งก้อน)
+        const studentInfo = studentData[id];
+
+        if (studentInfo) {
+            // ถ้าเจอข้อมูล ให้แสดงผลทั้งชื่อและห้อง
+            resultDiv.innerHTML = `
+                <span style="font-size: 14px; color: #666;">รหัสนักเรียน: ${id}</span>
+                <span class="student-name">${studentInfo.name}</span>
+                <span style="font-size: 16px; color: #333;">เข้าพักที่</span>
+                <span class="room-number">${studentInfo.room}</span>
+            `;
         } else {
             // ถ้าไม่เจอข้อมูล
-            resultDiv.innerHTML = `<span style='color: red;'>ไม่พบข้อมูลห้องพักของเลขประจำตัว ${id}</span>`;
+            resultDiv.innerHTML = `<span style='color: red;'>ไม่พบข้อมูลของเลขประจำตัว <b>${id}</b></span>`;
         }
     }
 
-    // ฟังก์ชันเสริม: ให้กด Enter แล้วค้นหาได้เลย ไม่ต้องใช้เมาส์คลิกปุ่ม
+    // กด Enter เพื่อค้นหา
     function handleKeyPress(event) {
         if (event.key === "Enter") {
             checkRoom();
