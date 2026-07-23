@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบตรวจสอบห้องพักนักเรียน</title>
+    <title>ระบบค้นหาห้องพักนักเรียนค่าย GEP</title>
     <style>
         body {
             font-family: 'Sarabun', Tahoma, sans-serif;
@@ -78,7 +78,7 @@
 <body>
 
 <div class="container">
-    <h2>ตรวจสอบห้องพักนักเรียน</h2>
+    <h2>ตรวจสอบห้องพักค่าย GEP</h2>
     <input type="text" id="studentId" placeholder="กรอกเลขประจำตัวนักเรียน..." onkeypress="handleKeyPress(event)">
     <br>
     <button onclick="checkRoom()">ค้นหา</button>
@@ -105,7 +105,7 @@
         resultDiv.style.display = "block";
 
         if (id === "") {
-            resultDiv.innerHTML = "<span style='color: red;'>กรุณากรอกเลขประจำตัวนักเรียนครับ</span>";
+            resultDiv.innerHTML = "<span style='color: red;'>กรุณากรอกเลขประจำตัวนักเรียน</span>";
             return;
         }
 
@@ -117,7 +117,7 @@
             resultDiv.innerHTML = `
                 <span style="font-size: 14px; color: #666;">รหัสนักเรียน: ${id}</span>
                 <span class="student-name">${studentInfo.name}</span>
-                <span style="font-size: 16px; color: #333;">เข้าพักที่</span>
+                <span style="font-size: 16px; color: #333;">ห้องพัก</span>
                 <span class="room-number">${studentInfo.room}</span>
             `;
         } else {
