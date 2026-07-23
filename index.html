@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบตรวจสอบห้องพักนักเรียน</title>
+    <style>
+        body {
+            font-family: 'Sarabun', Tahoma, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            min-height: 25px; /* กันหน้ากระตุกเวลาข้อความโผล่ */
+        }
+        .room-number {
+            color: #d9534f;
+            font-size: 24px;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>ตรวจสอบห้องพักนักเรียน</h2>
+    <input type="text" id="studentId" placeholder="กรอกเลขประจำตัวนักเรียนที่นี่..." onkeypress="handleKeyPress(event)">
+    <br>
+    <button onclick="checkRoom()">ค้นหา</button>
+    
+    <!-- พื้นที่สำหรับแสดงผลลัพธ์ -->
+    <div id="result"></div>
+</div>
+
+<script>
+    // ฐานข้อมูลจำลอง: จับคู่เลขประจำตัวกับหมายเลขห้อง
+    // คุณสามารถเพิ่มหรือแก้ไขข้อมูลตรงนี้ได้เลย
+    const studentData = {
+        "1001": "ห้อง 101 (ตึก A)",
+        "1002": "ห้อง 102 (ตึก A)",
+        "1003": "ห้อง 201 (ตึก B)",
+        "1004": "ห้อง 205 (ตึก B)",
+        "5555": "ห้อง VIP (ตึก C)"
+    };
+
+    function checkRoom() {
+        // ดึงค่าจากช่อง input และตัดช่องว่างซ้ายขวาออก
+        const id = document.getElementById("studentId").value.trim();
+        const resultDiv = document.getElementById("result");
+
+        // ตรวจสอบว่ากรอกข้อมูลหรือยัง
+        if (id === "") {
+            resultDiv.innerHTML = "<span style='color: red;'>กรุณากรอกเลขประจำตัวนักเรียนครับ</span>";
+            return;
+        }
+
+        // ค้นหาข้อมูลใน object studentData
+        if (studentData[id]) {
+            // ถ้าเจอข้อมูล ให้แสดงผล
+            resultDiv.innerHTML = `เลขประจำตัว <b>${id}</b><br> <span class="room-number">${studentData[id]}</span>`;
+        } else {
+            // ถ้าไม่เจอข้อมูล
+            resultDiv.innerHTML = `<span style='color: red;'>ไม่พบข้อมูลห้องพักของเลขประจำตัว ${id}</span>`;
+        }
+    }
+
+    // ฟังก์ชันเสริม: ให้กด Enter แล้วค้นหาได้เลย ไม่ต้องใช้เมาส์คลิกปุ่ม
+    function handleKeyPress(event) {
+        if (event.key === "Enter") {
+            checkRoom();
+        }
+    }
+</script>
+
+</body>
+</html>
